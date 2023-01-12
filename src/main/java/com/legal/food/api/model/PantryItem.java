@@ -1,5 +1,6 @@
 package com.legal.food.api.model;
 
+import com.legal.food.api.pantry.PantryResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +29,19 @@ public class PantryItem {
     private String unit;
     @ManyToOne(targetEntity = Ingredient.class)
     private Ingredient ingredient;
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne(targetEntity = User.class)
+    private User user;
 
+    public static PantryResponse toPantryResponse(PantryItem pantryItem) {
+        return PantryResponse.builder()
+                .id(pantryItem.getId())
+                .barCode(pantryItem.getBarCode())
+                .name(pantryItem.getName())
+                .placeDate(pantryItem.getPlaceDate())
+                .expireDate(pantryItem.getExpireDate())
+                .quantity(pantryItem.getQuantity())
+                .unit(pantryItem.getUnit())
+                .ingredient(pantryItem.getIngredient())
+                .build();
+    }
 }
