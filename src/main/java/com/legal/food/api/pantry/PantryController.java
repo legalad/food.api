@@ -38,41 +38,38 @@ public class PantryController {
 
     //Post
     @PostMapping("/item")
-    public ResponseEntity<String> addPantryItem(
+    public ResponseEntity<PantryResponse> addPantryItem(
             @RequestBody PantryItemRequest request
     ) {
         try {
-            service.addPantryItem(request);
-            return ResponseEntity.ok("Pantry item added.");
+            return ResponseEntity.ok(service.addPantryItem(request));
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping("/items")
-    public ResponseEntity<String> addPantryItemsList(
+    public ResponseEntity<List<PantryResponse>> addPantryItemsList(
             @RequestBody List<PantryItemRequest> requestList
     ) {
 
         try {
-            service.addPantryItemList(requestList);
-            return ResponseEntity.ok("Pantry item list added.");
+            return ResponseEntity.ok(service.addPantryItemList(requestList));
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
     //Put
     @PutMapping("/item/{id}")
-    public ResponseEntity<String> updatePantryItem(
+    public ResponseEntity<PantryResponse> updatePantryItem(
             @PathVariable Integer id,
             @RequestBody PantryItemRequest request
     ) {
         try {
-            service.updatePantryItem(id, request);
-            return ResponseEntity.ok("Pantry item updated.");
+           return ResponseEntity.ok(service.updatePantryItem(id, request));
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 

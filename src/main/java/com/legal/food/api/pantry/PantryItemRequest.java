@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class PantryItemRequest {
     private String name;
     private String barCode;
-    private Integer placeDate;
-    private Integer expireDate;
+    private Long placeDate;
+    private Long expireDate;
     private Float quantity;
     private String unit;
     private Integer ingredientId;

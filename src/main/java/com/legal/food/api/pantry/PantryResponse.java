@@ -16,8 +16,8 @@ public class PantryResponse {
     private Integer id;
     private String name;
     private String barCode;
-    private Integer placeDate;
-    private Integer expireDate;
+    private Long placeDate;
+    private Long expireDate;
     private Float quantity;
     private String unit;
     private Ingredient ingredient;

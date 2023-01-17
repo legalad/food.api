@@ -38,8 +38,8 @@ public class PantryService {
         return PantryItem.toPantryResponse(pantryItem);
     }
 
-    public void addPantryItem(PantryItemRequest request) {
-        pantryRepository.save(
+    public PantryResponse addPantryItem(PantryItemRequest request) {
+        return getPantryItem(pantryRepository.save(
                 PantryItem.builder()
                         .barCode(request.getBarCode())
                         .name(request.getName())
@@ -52,15 +52,16 @@ public class PantryService {
                         .ingredient(ingredientRepository.findById(request.getIngredientId())
                                 .orElseThrow(() -> new EntityNotFoundException("Ingredient not exist with id: " + request.getIngredientId())))
                         .build()
-        );
+        ).getId());
     }
 
-    public void addPantryItemList(List<PantryItemRequest> requestList) {
-        requestList.forEach(this::addPantryItem
-        );
+    public List<PantryResponse> addPantryItemList(List<PantryItemRequest> requestList) {
+        List<PantryResponse> pantryResponseList = new ArrayList<PantryResponse>();
+        requestList.forEach( item -> pantryResponseList.add(addPantryItem(item)) );
+        return pantryResponseList;
     }
 
-    public void updatePantryItem(Integer id, PantryItemRequest request) {
+    public PantryResponse updatePantryItem(Integer id, PantryItemRequest request) {
         PantryItem pantryItem = pantryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pantry item not exist with id: " + id));
         pantryItem.setBarCode(request.getBarCode());
@@ -70,7 +71,7 @@ public class PantryService {
         pantryItem.setQuantity(request.getQuantity());
         pantryItem.setUnit(request.getUnit());
 
-        pantryRepository.save(pantryItem);
+        return getPantryItem(pantryRepository.save(pantryItem).getId());
     }
 
     public void deletePantryItem(Integer id) {
