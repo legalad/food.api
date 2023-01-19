@@ -56,7 +56,7 @@ public class PantryService {
     }
 
     public List<PantryResponse> addPantryItemList(List<PantryItemRequest> requestList) {
-        List<PantryResponse> pantryResponseList = new ArrayList<PantryResponse>();
+        List<PantryResponse> pantryResponseList = new ArrayList<>();
         requestList.forEach( item -> pantryResponseList.add(addPantryItem(item)) );
         return pantryResponseList;
     }
@@ -74,7 +74,10 @@ public class PantryService {
         return getPantryItem(pantryRepository.save(pantryItem).getId());
     }
 
-    public void deletePantryItem(Integer id) {
+    public PantryResponse deletePantryItem(Integer id) {
+        PantryItem pantryItem = pantryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pantry item not exist with id: " + id));
         pantryRepository.deleteById(id);
+        return PantryItem.toPantryResponse(pantryItem);
     }
 }
